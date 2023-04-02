@@ -296,7 +296,14 @@ abstract class Extension
 
             $defaultConfig = $this->defaultConfig();
 
-            $this->__config__ = $defaultConfig;
+            $this->__config__ = $defaultConfig ?? [];
+
+            //读取app.php中的配置
+            $config = config('plugin.builder.man.app.' . $this->getId(), []);
+
+            if ($config) {
+                $this->__config__ = array_merge($this->__config__, $config);
+            }
         }
 
         return $this->__config__;
