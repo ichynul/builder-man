@@ -42,7 +42,7 @@ class Index extends Controller
 {
     public function index(Request $request)
     {
-        $builder = Builder::getInstance();
+        $builder = Builder::getInstance('builder', '测试');
         if (request()->method() == 'GET') {
             $form = $builder->form();
             $form->image('avatar', '头像')->thumbSize(50, 50);
