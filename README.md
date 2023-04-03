@@ -86,8 +86,9 @@ class Memberlevel extends Controller
     //引入控制器动作
     use actions\HasBase;//基础，必须
     use actions\HasIndex;//列表
-    use actions\HasView;//查看
     use actions\HasAdd;//添加
+    use actions\HasEdit;//编辑
+    use actions\HasView;//查看
     use actions\HasDelete;//删除
 
     /**
