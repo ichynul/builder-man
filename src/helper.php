@@ -67,25 +67,28 @@ if (!function_exists('url')) {
      */
     function url($url = '', $vars = [])
     {
-        $url = ltrim($url, '/');
-        $path = ltrim(request()->path(), '/');
+        $url = trim($url, '/');
+        $path = trim(request()->path(), '/');
 
         $arr1 = explode('/', $url);
         $arr2 = explode('/', $path);
 
         $isPlugin = false;
 
-        if (isset($arr1[1]) && $arr1[0] === 'app') {
-            $arr2 = $arr1;
-        } else if (count($arr1) >= 4) {
-            $arr2 = $arr1;
-        } else if (!isset($arr2[0])) {
-            $arr2 = $arr1;
+        if ($arr1[0] === 'app') {
+            array_shift($arr1);
+            $isPlugin = true;
+            $arr1[1] = !empty($arr1[1]) ? $arr1[1] : 'index';
+            $arr1[2] = !empty($arr1[2]) ? $arr1[2] : 'index';
+            $arr2 = [$arr1[0], $arr1[1], $arr1[2]];
+        } else if (count($arr1) >= 3) {
+            $arr2 = [$arr1[0], $arr1[1], $arr1[2]];
         } else {
             if ($arr2[0] === 'app') {
                 array_shift($arr2);
                 $isPlugin = true;
             }
+            $arr2[0] = !empty($arr2[0]) ? $arr2[0] : 'index';
             $arr2[1] = !empty($arr2[1]) ? $arr2[1] : 'index';
             $arr2[2] = !empty($arr2[2]) ? $arr2[2] : 'index';
             if (count($arr1) == 1) {

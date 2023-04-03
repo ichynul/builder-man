@@ -5,7 +5,6 @@ namespace tpext\webman;
 use Webman\Http\Request;
 use think\facade\Session;
 use Webman\Http\Response;
-use plugin\admin\api\Auth;
 use Webman\MiddlewareInterface;
 
 /**
@@ -21,14 +20,11 @@ class AdminAuth implements MiddlewareInterface
      */
     public function process(Request $request, callable $next): Response
     {
-        $controller = $request->controller;
-        $action = $request->action;
-        $code = 0;
-        $msg = '';
-        if (!Auth::canAccess($controller, $action, $code, $msg)) {
+        $admin = admin();
+        if (!$admin) {
             $result = [
                 'code' => 0,
-                'msg' => $msg,
+                'msg' => '未登录',
                 'data' => null,
                 'url' => '',
                 'wait' => 3,
@@ -39,7 +35,6 @@ class AdminAuth implements MiddlewareInterface
 
         $admin_user = Session::get('admin_user');
         if (!$admin_user) {
-            $admin = Session::get('admin');
             $roles = $admin['roles'];
             Session::set('admin_user', ['id' => $admin['id'], 'role_id' => in_array(1, $roles) ? 1 : 0]);
         }

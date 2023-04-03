@@ -2,13 +2,14 @@
 
 namespace tpext\webman;
 
-use tpext\builder\inface\Auth as Authinface;
-use plugin\admin\api\Auth;
+use tpext\builder\inface\Auth;
+use plugin\admin\app\model\Role;
+use plugin\admin\app\model\Rule;
 
 /**
  * url鉴权
  */
-class UrlCheck implements Authinface
+class UrlCheck implements Auth
 {
     /**
      * Undocumented function
@@ -18,20 +19,40 @@ class UrlCheck implements Authinface
      */
     public static function checkUrl($url)
     {
-        $url = ltrim($url, '/');
-        $arr1 = explode('/', $url);
-
-        if (isset($arr1[1]) && $arr1[0] === 'app') {
-            array_shift($arr1);
+        // 获取登录信息
+        $admin = admin();
+        if (!$admin) {
+            return false;
         }
 
-        $arr1[1] = !empty($arr1[1]) ? $arr1[1] : 'index';
-        $arr1[2] = !empty($arr1[2]) ? $arr1[2] : 'index';
+        // 当前管理员无角色
+        $roles = $admin['roles'];
+        if (!$roles) {
+            return false;
+        }
 
-        $code = 0;
-        $msg = '';
+        // 角色没有规则
+        $rules = Role::whereIn('id', $roles)->pluck('rules');
+        $rule_ids = [];
+        foreach ($rules as $rule_string) {
+            if (!$rule_string) {
+                continue;
+            }
+            $rule_ids = array_merge($rule_ids, explode(',', $rule_string));
+        }
+        if (!$rule_ids) {
+            return false;
+        }
 
-        if (!Auth::canAccess($arr1[1], $arr1[2], $code, $msg)) {
+        // 超级管理员
+        if (in_array('*', $rule_ids)) {
+            return true;
+        }
+
+        // 查询是否有当前控制器的规则
+        $rule = Rule::where('href', $url)->whereIn('id', $rule_ids)->first();
+
+        if (!$rule) {
             return false;
         }
 
