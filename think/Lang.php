@@ -172,7 +172,7 @@ class Lang
             return [];
         }
 
-        $this->loadedlangFiles[$file] == $filemtime;
+        $this->loadedlangFiles[$file] = $filemtime;
 
         $type = pathinfo($file, PATHINFO_EXTENSION);
 
