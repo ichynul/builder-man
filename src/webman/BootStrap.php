@@ -2,9 +2,11 @@
 
 namespace tpext\webman;
 
-use tpext\common\ExtLoader;
+use think\Validate;
 use tpext\think\App;
+use think\facade\Lang;
 use think\facade\Cache;
+use tpext\common\ExtLoader;
 
 class BootStrap implements \Webman\Bootstrap
 {
@@ -13,6 +15,12 @@ class BootStrap implements \Webman\Bootstrap
         if ($worker->name == 'monitor') {
             return;
         }
+
+        Validate::maker(function (Validate $validate) {
+            $validate->setLang(Lang::getInstance());
+        });
+
+        Lang::load(BuilderMan::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['think', 'lang', App::getDefaultLang() . '.php']));
 
         if (Cache::get('builder_man_init')) {
             return;
@@ -58,7 +66,7 @@ class BootStrap implements \Webman\Bootstrap
             return;
         }
 
-        echo '注册扩展目录:extend/成功,composer.json文件已修改' . "\n";
+        echo 'regist path [/extend] succeeded, composer.json was updated' . "\n";
 
         file_put_contents(base_path() . '/composer.json', json_encode($json, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     }

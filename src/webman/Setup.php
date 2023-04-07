@@ -4,6 +4,7 @@ namespace tpext\webman;
 
 use tpext\think\View;
 use Webman\Http\Request;
+use think\facade\Validate;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
 use tpext\builder\common\Builder;
@@ -22,6 +23,7 @@ class Setup implements MiddlewareInterface
 
     public function process(Request $request, callable $next): Response
     {
+        Validate::destroyInstance();
         $instance = BuilderMan::getInstance();
         $rootPath = $instance->getRoot();
         $instance->copyAssets();
@@ -69,6 +71,7 @@ class Setup implements MiddlewareInterface
         builderModule::getInstance()->setUploadUrl(config('plugin.builder.man.app.upload_url', ''));
         builderModule::getInstance()->setImportUrl(config('plugin.builder.man.app.import_url', ''));
         builderModule::getInstance()->setChooseUrl(config('plugin.builder.man.app.choose_url', ''));
+        Validate::destroyInstance();
 
         return $next($request);
     }

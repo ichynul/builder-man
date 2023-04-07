@@ -98,6 +98,13 @@ class Validate extends Facade
         return self::$instance;
     }
 
+    public static function destroyInstance()
+    {
+        if (self::$instance) {
+            self::$instance = null;
+        }
+    }
+
     // 调用实际类的方法
     public static function __callStatic($method, $params)
     {
