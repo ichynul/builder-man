@@ -3,7 +3,7 @@
 namespace tpext\common;
 
 use think\facade\Db;
-use think\facade\Log;
+use support\Log;
 use tpext\think\App;
 
 class Tool
