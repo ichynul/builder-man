@@ -71,6 +71,6 @@ class App
      */
     public static function getDefaultLang()
     {
-        return config('plugin.builder.man.app.lang.default_lang', 'zh-cn');
+        return config('plugin.builder.man.lang.default_lang', 'en');
     }
 }

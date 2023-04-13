@@ -11,6 +11,7 @@ class Install
      */
     protected static $pathRelation = array(
         'webman/config/app.php' => 'config/plugin/builder/man/app.php',
+        'webman/config/lang.php' => 'config/plugin/builder/man/lang.php',
         'webman/config/bootstrap.php' => 'config/plugin/builder/man/bootstrap.php',
         'webman/config/middleware.php' => 'config/plugin/builder/man/middleware.php',
         'webman/config/route.php' => 'config/plugin/builder/man/route.php',
@@ -47,7 +48,9 @@ class Install
                     mkdir($parent_dir, 0755, true);
                 }
             }
-            if ($source == 'webman/config/app.php' && is_file(base_path() . "/$dest")) {
+            if (($source == 'webman/config/app.php' || $source == 'webman/config/lang.php')
+                && is_file(base_path() . "/$dest")
+            ) {
                 continue;
             }
             copy_dir(__DIR__ . "/$source", base_path() . "/$dest");
