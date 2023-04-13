@@ -23,6 +23,18 @@ class Install
      */
     public static function install()
     {
+        $appConfig = file_get_contents(config_path() . '/app.php');
+
+        file_put_contents(config_path() . '/app.php', preg_replace('/([\'\"]request_class[\'\"]\s*=>\s*)[:\w\\\]+/i', '$1Request::class', $appConfig));
+
+        echo "use [support\\Request::class] as [request_class] in config/app.php\n";
+
+        $request = file_get_contents(base_path() . '/support/Request.php');
+
+        file_put_contents(base_path() . '/support/Request.php', preg_replace('/(class\s+Request\s+extends\s+)[\w\\\]+/i', '$1\\think\\Request', $request));
+
+        echo "let [support\\Request] extends [think\\Request] in support/Request.php\n";
+
         static::installByRelation();
     }
 
@@ -32,6 +44,18 @@ class Install
      */
     public static function uninstall()
     {
+        $appConfig = file_get_contents(base_path() . '/app.php');
+
+        file_put_contents(base_path() . '/app.php', preg_replace('/([\'\"]request_class[\'\"]\s*=>\s*)[:\w\\\]+/i', '$1Request::class', $appConfig));
+
+        echo "use [support\\Request::class] as [request_class] in config/app.php\n";
+
+        $request = file_get_contents(base_path() . '/support/Request.php');
+
+        file_put_contents(base_path() . '/support/Request.php', preg_replace('/(class\s+Request\s+extends\s+)[\w\\\]+/i', '$1\\Webman\\Http\\Request', $request));
+
+        echo "let [support\\Request] extends [Webman\\Http\\Request] in support/Request.php\n";
+        
         self::uninstallByRelation();
     }
 
