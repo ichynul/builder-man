@@ -54,7 +54,7 @@ class Lang
      */
     public function __construct(array $config = [])
     {
-        $this->config = array_merge($this->config, array_change_key_case(config('plugin.tpext.core.app.lang', [])));
+        $this->config = array_merge($this->config, array_change_key_case(config('plugin.builder.man.lang', [])));
         $this->config = array_merge($this->config, array_change_key_case($config));
         $this->range  = $this->config['default_lang'];
     }

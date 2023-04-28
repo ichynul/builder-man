@@ -2,17 +2,6 @@
 
 return [
     'enable' => true,
-
-    //langauge config for \think\Lang
-    'lang' => [
-        // 默认语言
-        'default_lang'    => 'zh-cn',
-        // 扩展语言包
-        'extend_list'     => [],
-        // 是否支持语言分组
-        'allow_group'     => false,
-    ],
-    //
     'name' => 'Webman后台管理系统',
     'description' => 'Webman后台管理系统',
     'favicon' => '/assets/lightyearadmin/favicon.ico',

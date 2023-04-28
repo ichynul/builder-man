@@ -66,7 +66,7 @@ class BootStrap implements \Webman\Bootstrap
             return;
         }
 
-        echo 'regist path [/extend] succeeded, composer.json was updated' . "\n";
+        echo '[builder-man] regist path `extend/` succeeded, composer.json was updated .' . "\n";
 
         file_put_contents(base_path() . '/composer.json', json_encode($json, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     }
