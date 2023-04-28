@@ -9,6 +9,7 @@ use think\facade\Session;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
 use tpext\builder\common\Module;
+use tpext\builder\common\Module as builderModule;
 
 /**
  * Admin鉴权中间件
@@ -23,6 +24,10 @@ class AdminAuth implements MiddlewareInterface
      */
     public function process(Request $request, callable $next): Response
     {
+        builderModule::getInstance()->setUploadUrl(config('plugin.builder.man.app.upload_url', ''));
+        builderModule::getInstance()->setImportUrl(config('plugin.builder.man.app.import_url', ''));
+        builderModule::getInstance()->setChooseUrl(config('plugin.builder.man.app.choose_url', ''));
+
         $admin = admin();
         if (!$admin) {
             $result = [
@@ -38,7 +43,7 @@ class AdminAuth implements MiddlewareInterface
 
         $admin_user = Session::get('admin_user');
         if (!$admin_user) {
-            $roles = $admin['roles'];
+            $roles = $admin['roles'] ?? [];
             Session::set('admin_user', ['id' => $admin['id'], 'role_id' => in_array(1, $roles) ? 1 : 0]);
         }
 
