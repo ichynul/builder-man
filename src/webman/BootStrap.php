@@ -7,6 +7,7 @@ use tpext\think\App;
 use think\facade\Lang;
 use think\facade\Cache;
 use tpext\common\ExtLoader;
+use tpext\common\RouteLoader;
 
 class BootStrap implements \Webman\Bootstrap
 {
@@ -23,12 +24,14 @@ class BootStrap implements \Webman\Bootstrap
         Lang::load(BuilderMan::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['think', 'lang', App::getDefaultLang() . '.php']));
 
         if (Cache::get('builder_man_init')) {
+            ExtLoader::bindExtensions();
             return;
         }
         static::composer();
         static::getExtendExtensions();
         ExtLoader::bindExtensions();
-
+        RouteLoader::load();
+        
         Cache::set('builder_man_init', true, 60);
     }
 

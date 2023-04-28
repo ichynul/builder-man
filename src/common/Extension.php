@@ -2,6 +2,8 @@
 
 namespace tpext\common;
 
+use tpext\think\App;
+
 abstract class Extension
 {
     protected static $extensions = [];
@@ -143,6 +145,21 @@ abstract class Extension
     final public function getAssets()
     {
         return $this->assets;
+    }
+
+    final public function getNameSpaceMap()
+    {
+        if (empty($this->namespaceMap)) {
+            if ($this->isExtend()) {
+                $path = $this->getRoot();
+                $namespace = trim(str_replace(App::getRootPath() . 'extend', '', $path), DIRECTORY_SEPARATOR);
+                $this->namespaceMap = [str_replace('/', '\\', $namespace), $path];
+            } else {
+                $this->namespaceMap = Tool::getNameSpaceMap(get_called_class());
+            }
+        }
+
+        return $this->namespaceMap;
     }
 
     final public static function extensionsList()

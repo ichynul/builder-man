@@ -2,8 +2,9 @@
 
 namespace tpext\common;
 
-use Webman\Event\Event;
+use think\helper\Str;
 use think\facade\Cache;
+use Webman\Event\Event;
 
 class ExtLoader
 {
@@ -27,6 +28,13 @@ class ExtLoader
      * @var Resource[]
      */
     private static $resources = [];
+
+    /**
+     * Undocumented variable
+     *
+     * @var array
+     */
+    private static $bindModules = [];
 
     private static $watches = [];
 
@@ -83,6 +91,27 @@ class ExtLoader
     /**
      * Undocumented function
      *
+     * @param array $class
+     * @return void
+     */
+    public static function bindModules($class)
+    {
+        self::$bindModules = array_merge(self::$bindModules, $class);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public static function getBindModules()
+    {
+        return self::$bindModules;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param string $name
      * @param mixed $class
      * @param boolean $first
@@ -129,6 +158,7 @@ class ExtLoader
     {
         self::$modules = Cache::get('tpext_modules') ?: [];
         self::$resources = Cache::get('tpext_resources') ?: [];
+        self::$bindModules = Cache::get('tpext_bind_modules') ?: [];
 
         foreach (self::$modules as $k => $m) {
             if (!class_exists($k, false)) {
@@ -146,6 +176,7 @@ class ExtLoader
             self::findExtensions();
             Cache::set('tpext_modules', self::$modules, 60);
             Cache::set('tpext_resources', self::$resources, 60);
+            Cache::set('tpext_bind_modules', self::$bindModules, 60);
         }
 
         foreach (self::$modules as $k => $m) {
@@ -190,13 +221,37 @@ class ExtLoader
                 if (!($instance instanceof Extension)) {
                     continue;
                 }
-                
+
                 $instance->install();
 
                 if ($instance instanceof Resource) {
                     self::$resources[$declare] = $instance;
                 } else if ($instance instanceof Module) {
                     self::$modules[$declare] = $instance;
+                    $mods = $instance->getModules();
+
+                    if (!empty($mods)) {
+
+                        $name = $instance->getName();
+
+                        if (!$name) {
+                            $name = strtolower(preg_replace('/\W/', '.', $declare));
+                        }
+
+                        foreach ($mods as $key => $controllers) {
+
+                            $controllers = array_map(function ($val) {
+                                return Str::studly($val);
+                            }, $controllers);
+
+                            self::$bindModules[strtolower($key)][] = [
+                                'name' => $name,
+                                'controllers' => $controllers,
+                                'namespace_map' => $instance->getNameSpaceMap(),
+                                'classname' => $declare,
+                            ];;
+                        }
+                    }
                 }
             }
         }

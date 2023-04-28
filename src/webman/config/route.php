@@ -7,7 +7,7 @@
 use Webman\Route;
 use tpext\webman\AdminAuth;
 
-Route::group('/builder', function () {
+Route::group('/app/admin', function () {
     Route::any('/upload/upfiles', [tpext\builder\admin\controller\Upload::class, 'upfiles']);
     Route::any('/upload/base64', [tpext\builder\admin\controller\Upload::class, 'base64']);
     Route::any('/import/page', [tpext\builder\admin\controller\Import::class, 'page']);

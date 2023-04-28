@@ -8,6 +8,8 @@ use tpext\think\App;
 
 class Tool
 {
+    public static $autoload_psr4 = [];
+
     public static function copyDir($src = '', $dst = '')
     {
         if (empty($src) || empty($dst)) {
@@ -105,6 +107,36 @@ class Tool
         return $assetsDir;
     }
 
+    public static function getNameSpaceMap($class)
+    {
+        if (empty(static::$autoload_psr4)) {
+
+            $composerPath = App::getRootPath() . 'vendor' . DIRECTORY_SEPARATOR . 'composer' . DIRECTORY_SEPARATOR;
+
+            if (is_file($composerPath . 'autoload_psr4.php')) {
+                static::$autoload_psr4 = require $composerPath . 'autoload_psr4.php';
+            }
+        }
+
+        if (!empty(static::$autoload_psr4)) {
+
+            foreach (static::$autoload_psr4 as $namespace => $paths) {
+
+                if (empty($namespace)) {
+                    continue;
+                }
+
+                if (false !== strpos(strtolower($class), strtolower($namespace))) {
+                    return [$namespace, $paths[0]];
+                }
+            }
+        }
+
+        $fitst = strstr($class, '\\', true);
+
+        return [$fitst, App::getRootPath() . 'extend' . DIRECTORY_SEPARATOR . $fitst];
+    }
+
     public static function executeSqlFile($file, &$errors = [])
     {
         $content = file_get_contents($file);
@@ -148,7 +180,7 @@ class Tool
             try {
                 Db::execute($sql);
                 $success += 1;
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 Log::error($e->__toString());
                 $errors[] = $e;
             }
