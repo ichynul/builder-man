@@ -181,11 +181,13 @@ class ExtLoader
 
         foreach (self::$modules as $k => $m) {
             $m->loaded();
+            $m->copyAssets();
             self::trigger('tpext_extension_loaded_' . $k);
         }
 
         foreach (self::$resources as $k => $r) {
             $r->loaded();
+            $r->copyAssets();
             self::trigger('tpext_extension_loaded_' . $k);
         }
     }
