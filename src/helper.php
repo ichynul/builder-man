@@ -1,14 +1,6 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006~2021 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
+use think\Request;
 use support\Log;
 use think\route\Url;
 use Webman\Http\Response;
@@ -18,42 +10,6 @@ if (!function_exists('trace')) {
     function trace($log)
     {
         Log::info($log);
-    }
-}
-
-if (!function_exists('input')) {
-
-    /**
-     * 获取输入数据 支持默认值和过滤
-     * @param string    $key 获取的变量名
-     * @param mixed     $default 默认值
-     * @param string    $filter 过滤方法
-     * @return mixed
-     */
-    function input($key = '', $default = null)
-    {
-        if (0 === strpos($key, '?')) {
-            $key = substr($key, 1);
-            $data = request()->all();
-            return isset($data[$key]);
-        }
-
-        if ($pos = strpos($key, '/')) {
-            $key = substr($key, 0, $pos);
-        }
-        if ($pos = strpos($key, '.')) {
-            // 指定参数来源
-            $method = substr($key, 0, $pos);
-            if (in_array($method, ['get', 'post', 'header', 'file'])) {
-                $key = substr($key, $pos + 1);
-            } else {
-                $method = 'all';
-            }
-
-            return request()->$method($key, $default);
-        }
-
-        return request()->input($key, $default);
     }
 }
 
@@ -124,5 +80,52 @@ if (!function_exists('download')) {
         $response->download($filename, $name);
 
         return $response;
+    }
+}
+
+if (!function_exists('tpRequest')) {
+
+    /**
+     * @return Request|\Webman\Http\Request|support\Request|think\facade\Request|Request|null
+     */
+    function tpRequest()
+    {
+        return request();
+    }
+}
+
+if (!function_exists('tpInput')) {
+
+    /**
+     * 获取输入数据 支持默认值和过滤
+     * (tp框架用法，用于webman等框架兼容)
+     * @param string    $key 获取的变量名
+     * @param mixed     $default 默认值
+     * @return mixed
+     */
+    function tpInput($key = '', $default = null)
+    {
+        if (0 === strpos($key, '?')) {
+            $key = substr($key, 1);
+            $data = request()->all();
+            return isset($data[$key]);
+        }
+
+        if ($pos = strpos($key, '/')) {
+            $key = substr($key, 0, $pos);
+        }
+        if ($pos = strpos($key, '.')) {
+            // 指定参数来源
+            $method = substr($key, 0, $pos);
+            if (in_array($method, ['get', 'post', 'header', 'file'])) {
+                $key = substr($key, $pos + 1);
+            } else {
+                $method = 'all';
+            }
+
+            return request()->$method($key, $default);
+        }
+
+        return request()->input($key, $default);
     }
 }
