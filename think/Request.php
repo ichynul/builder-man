@@ -234,6 +234,43 @@ class Request extends \Webman\Http\Request
     }
 
     /**
+     * 重写 \Webman\Http\Request::input，不支持$filter参数
+     * @param string $name
+     * @param mixed $default
+     * @return mixed|null
+     */
+    public function input(string $name, $default = null)
+    {
+        $key = $name;
+        if (0 === strpos($key, '?')) {
+            $key = substr($key, 1);
+            $has = true;
+        }
+
+        if ($pos = strpos($key, '.')) {
+            // 指定参数来源
+            $method = substr($key, 0, $pos);
+            if (in_array($method, ['get', 'post', 'put', 'patch', 'delete', 'route', 'param', 'request', 'session', 'cookie', 'server', 'header', 'file'])) {
+                $key = substr($key, $pos + 1);
+                if ('server' == $method && is_null($default)) {
+                    $default = '';
+                }
+            } else {
+                $method = 'param';
+            }
+        } else {
+            // 默认为自动判断
+            $method = 'param';
+        }
+
+        if (isset($has)) {
+            return $this->has($key, $method, $default);
+        } else {
+            return $this->$method($key, $default);
+        }
+    }
+
+    /**
      * 获取GET参数
      * @access public
      * @param  string|array $name 变量名
