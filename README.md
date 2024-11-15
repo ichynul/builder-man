@@ -233,6 +233,16 @@ class Memberlevel extends Controller
 
 ### 其他说明
 
+#### 语言
+
+语言默认为英文，如需切换语言：在`config\plugin\builder\man\lang.php`中
+
+```php
+'default_lang'    => 'zh-cn',
+```
+
+#### 上传文件、鉴权
+
 需要对上传文件，选择文件，导入文件等功能进行定制，可以参考以下代码：
 
 ```php
