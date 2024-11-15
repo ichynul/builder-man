@@ -90,6 +90,11 @@ class View
         self::$shareVars  = [];
     }
 
+    public static function getShare()
+    {
+        return self::$shareVars;
+    }
+
     public function clear()
     {
         $this->vars = [];
@@ -112,6 +117,8 @@ class View
                 $template = $this->parseTemplate($template);
             }
 
+            $view_dir_arr = explode($this->config['view_dir_name'], $template);
+            $this->engine->config(['view_path' => $view_dir_arr[0] . $this->config['view_dir_name'] . DIRECTORY_SEPARATOR]); //自动推断view_path
             $this->engine->fetch($template, $vars);
         }
 
