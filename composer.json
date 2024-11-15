@@ -21,8 +21,7 @@
         "webman/think-orm": "^1.0",
         "webman/event": "^1.0.2",
         "matthiasmullie/minify": "^1.3",
-        "ichynul/lightyearadmin": "^1.1.8",
-        "ichynul/tpextbuilder": "^3.9.1"
+        "ichynul/lightyearadmin": "^1.1.8"
     },
     "autoload": {
         "psr-4": {

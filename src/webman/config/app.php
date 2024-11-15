@@ -2,15 +2,6 @@
 
 return [
     'enable' => true,
-    'name' => 'Webman后台管理系统',
-    'description' => 'Webman后台管理系统',
-    'favicon' => '/assets/lightyearadmin/favicon.ico',
-    'assets_ver' => '1.0',
-    'auth_class' => \tpext\webman\UrlCheck::class, //权限检测类，按钮对无权限者隐藏。类需实现 \tpext\builder\inface\Auth 接口
-    'minify' => false, //资源压缩
-    'upload_url' => '/app/admin/upload/upfiles', //上传文件url地址
-    'import_url' => '/app/admin/import/page', //文件导入url地址
-    'choose_url' => '/app/admin/attachment/index', //选择文件url地址
     //builder 配置
     //see vendor/ichynul/tpextbuilder/src/config.php
     'tpext_builder_common_module' => [
@@ -43,6 +34,5 @@ return [
         'google_map_js_key' => '//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&key=您申请的key值',
         'tcent_map_js_key' => '//map.qq.com/api/js?v=2.exp&libraries=place&key=您申请的key值',
         'yandex_map_js_key' => '//api-maps.yandex.ru/2.1/?lang=ru_RU',
-        'ui_driver' => \tpext\builder\common\Builder::class,
     ]
 ];

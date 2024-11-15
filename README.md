@@ -1,10 +1,34 @@
-## 关于
+# 关于
 
 UI builder for webman
 
-## 安装
+## 2024-11-15 升级2.0版本
 
-`composer require ichynul/builder-man`
+### 与1.0版本的不同
+
+- 简化代码，去除了与 `webman/admin`相关的依赖代码，增强兼容性。
+
+- `composer.json`中移除了对`ichynul/tpextbuilder`UI的依赖，有两套UI可供选择，改为按需选择安装。
+
+- UI框架的区别：tpextbuilder基于bootstrap4，tpext-tinyvue基于tinyvue。
+
+## 安装webman
+
+https://www.workerman.net/doc/webman/install.html
+
+## 安装本扩展
+
+安装UI builder扩展（二选一）：
+
+`composer require ichynul/tpextbuilder:^3.9.1`
+
+或者
+
+`composer require ichynul/tpext-tinyvue:^5.0.1`
+
+安装本扩展
+
+`composer require ichynul/builder-man:^2.0.1`
 
 会自动安装相关依赖：`tp-orm`、`tp-cahce`、`tp-template`
 
@@ -29,7 +53,9 @@ UI builder for webman
 ## DEMO
 
 简单使用，一个表单：
+
 ```php
+
 <?php
 
 namespace app\controller;
@@ -52,7 +78,7 @@ class Index extends Controller
             $form->text('mobile', '手机号');
             $form->text('email', '邮件');
             
-            $form->fill(Admin::where('id', 1)->first());//测试使用laravel模型
+            $form->fill(['username' => 'admin111']);//填充数据
 
             return $builder;
         } else {
@@ -63,7 +89,7 @@ class Index extends Controller
                 'email',
             ]);
 
-            Admin::where('id', 1)->update($data);
+            //更新数据...
 
             $this->success('成功，数据是:' . json_encode($data));
         }
@@ -205,5 +231,32 @@ class Memberlevel extends Controller
 
 ```
 
+### 其他说明
+
+需要对上传文件，选择文件，导入文件等功能进行定制，可以参考以下代码：
+
+```php
+
+use tpext\builder\common\Module;
+use tpext\builder\common\Builder;
+
+//代码可以放在基础控制器的构造函数中、或中间件中
+
+public function setup(){
+
+    Module::getInstance()->setUploadUrl('/your/upload/url');//默认为：admin/upload/upfiles
+    Module::getInstance()->setChooseUrl('/your/choose/url');//默认为：admin/attachment/index
+    Module::getInstance()->setImportUrl('/your/import/url');//默认为：admin/import/page
+
+    //代码逻辑 可参考 tpextbuilder基于bootstrap4，tpext-tinyvue 中 controller/admin目录下的以下文件：
+    // Attachment.php controller/admin/Import.php controller/admin/Upload.php
+
+    Builder::auth('yourauthclass');//设置权限验证类，需要实现接口：\tpext\builder\inface\Auth。
+    Builder::aver('1.0.1');//资源版本号，用于控制更新。依赖的UI库可能会更新一些静态资源，修改版本号可以应用最新资源。
+}
+
+```
+
 ### License
+
 MIT
