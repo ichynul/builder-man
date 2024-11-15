@@ -258,8 +258,8 @@ public function setup(){
     Module::getInstance()->setChooseUrl('/your/choose/url');//默认为：admin/attachment/index
     Module::getInstance()->setImportUrl('/your/import/url');//默认为：admin/import/page
 
-    //代码逻辑 可参考 tpextbuilder基于bootstrap4，tpext-tinyvue 中 controller/admin目录下的以下文件：
-    // Attachment.php controller/admin/Import.php controller/admin/Upload.php
+    //代码逻辑 可参考 tpextbuilder | tpext-tinyvue 中 controller/admin 目录下的以下文件：
+    // Attachment.php | Import.php | Upload.php
 
     Builder::auth('yourauthclass');//设置权限验证类，需要实现接口：\tpext\builder\inface\Auth。
     Builder::aver('1.0.1');//资源版本号，用于控制更新。依赖的UI库可能会更新一些静态资源，修改版本号可以应用最新资源。
