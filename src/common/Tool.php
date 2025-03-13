@@ -2,8 +2,6 @@
 
 namespace tpext\common;
 
-use think\facade\Db;
-use support\Log;
 use tpext\think\App;
 
 class Tool
@@ -139,53 +137,6 @@ class Tool
 
     public static function executeSqlFile($file, &$errors = [])
     {
-        $content = file_get_contents($file);
-
-        if (!$content) {
-            return false;
-        }
-
-        $type = Db::getConfig('default', 'mysql');
-
-        $connections = Db::getConfig('connections');
-
-        $config = $connections[$type] ?? [];
-
-        if (empty($config) || empty($config['database'])) {
-            return false;
-        }
-
-        $prefix = $config['prefix'];
-
-        $content = preg_replace('/\r\n|\r/', "\n", $content);
-
-        $content = preg_replace('/__prefix__/is', $prefix, $content);
-
-        $content = preg_replace('/\n?\s*--\s.*?\n/', "\n", $content);
-
-        //$content = preg_replace('/\n?\s*#.*?\n/', "\n", $content);
-
-        $content = preg_replace('/\/\*.*?\*\//s', "\n", $content);
-
-        $content = preg_replace('/\n{2,}/s', "\n", $content);
-
-        $sqls = explode(";\n", $content);
-
-        $success = 0;
-
-        foreach ($sqls as $sql) {
-            if ($sql == '') {
-                continue;
-            }
-            try {
-                Db::execute($sql);
-                $success += 1;
-            } catch (\Throwable $e) {
-                Log::error($e->__toString());
-                $errors[] = $e;
-            }
-        }
-
-        return $success;
+        return true;
     }
 }

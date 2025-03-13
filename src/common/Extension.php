@@ -363,17 +363,9 @@ abstract class Extension
      */
     public function install()
     {
-        $sqlFile = $this->getRoot() . 'data' . DIRECTORY_SEPARATOR . 'install.sql';
-
-        $success = true;
-
-        if (is_file($sqlFile)) {
-            $success = Tool::executeSqlFile($sqlFile, $this->errors);
-        }
-
         $this->copyAssets();
 
-        return $success;
+        return true;
     }
 
     /**

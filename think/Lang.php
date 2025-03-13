@@ -8,7 +8,6 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-declare(strict_types=1);
 
 namespace think;
 
@@ -52,7 +51,7 @@ class Lang
      * @access public
      * @param array $config
      */
-    public function __construct(array $config = [])
+    public function __construct($config = [])
     {
         $this->config = array_merge($this->config, array_change_key_case(config('plugin.builder.man.lang', [])));
         $this->config = array_merge($this->config, array_change_key_case($config));
@@ -64,7 +63,7 @@ class Lang
      * @access public
      * @return array
      */
-    public function getConfig(): array
+    public function getConfig()
     {
         return $this->config;
     }
@@ -75,7 +74,7 @@ class Lang
      * @param string $lang 语言
      * @return void
      */
-    public function setLangSet(string $lang): void
+    public function setLangSet($lang)
     {
         $this->range = $lang;
     }
@@ -85,7 +84,7 @@ class Lang
      * @access public
      * @return string
      */
-    public function getLangSet(): string
+    public function getLangSet()
     {
         return $this->range;
     }
@@ -106,7 +105,7 @@ class Lang
      * @param string $langset 语言
      * @return void
      */
-    public function switchLangSet(string $langset)
+    public function switchLangSet($langset)
     {
         if (empty($langset)) {
             return;
@@ -134,7 +133,7 @@ class Lang
      * @param string       $range 语言作用域
      * @return array
      */
-    public function load($file, $range = ''): array
+    public function load($file, $range = '')
     {
         $range = $range ?: $this->range;
 
@@ -164,7 +163,7 @@ class Lang
      * @param string $file 语言文件名
      * @return array
      */
-    protected function parse(string $file): array
+    protected function parse($file)
     {
         $filemtime = filemtime($file);
 
@@ -204,7 +203,7 @@ class Lang
      * @param string      $range 语言作用域
      * @return bool
      */
-    public function has(string $name, string $range = ''): bool
+    public function has($name,  $range = '')
     {
         $range = $range ?: $this->range;
 
@@ -224,7 +223,7 @@ class Lang
      * @param string      $range 语言作用域
      * @return mixed
      */
-    public function get(string $name = null, array $vars = [], string $range = '')
+    public function get($name = null,  $vars = [],  $range = '')
     {
         $range = $range ?: $this->range;
 

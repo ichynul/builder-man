@@ -12,8 +12,6 @@ declare (strict_types = 1);
 
 namespace think\facade;
 
-use think\Facade;
-
 /**
  * @see \think\Lang
  * @package think\facade
@@ -24,10 +22,8 @@ use think\Facade;
  * @method static array load(string|array $file, string $range = '') 加载语言定义(不区分大小写)
  * @method static bool has(string|null $name, string $range = '') 判断是否存在语言定义(不区分大小写)
  * @method static mixed get(string|null $name = null, array $vars = [], string $range = '') 获取语言定义(不区分大小写)
- * @method static string detect(\think\Request $request) 自动侦测设置获取语言选择
- * @method static void saveToCookie(\think\Cookie $cookie) 保存当前语言到Cookie
  */
-class Lang extends Facade
+class Lang
 {
     /**
      * Undocumented variable
