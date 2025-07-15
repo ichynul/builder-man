@@ -138,23 +138,11 @@ class View
         // 分析模板文件规则
         $request = request();
 
-        $module = '';
-        $controller = '';
-        $action = '';
-
-        if ($request->route) {
-            $requestPath = strtolower($request->route->getPath());
-            $explode = explode('/', trim($requestPath, '/'));
-            $module = $explode[0] ?: 'index';
-            $controller  = $explode[1] ?? 'index';
-            $action  = $explode[2] ?? 'index';
-        } else {
-            $requestPath = strtolower($request->path());
-            $explode = explode('/', trim($requestPath, '/'));
-            $module = $explode[0] ?: 'index';
-            $controller  = $explode[1] ?? 'index';
-            $action  = $explode[2] ?? 'index';
-        }
+        $requestPath = strtolower(str_replace('[.html]', '', $request->path()));
+        $explode = explode('/', trim($requestPath, '/'));
+        $module = $explode[0] ?: 'index';
+        $controller  = $explode[1] ?? 'index';
+        $action  = $explode[2] ?? 'index';
 
         // 获取视图根目录
         if (strpos($template, '@')) {
