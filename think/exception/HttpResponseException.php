@@ -14,7 +14,7 @@ namespace think\exception;
 
 use Webman\Http\Request;
 use Webman\Http\Response;
-use support\exception\BusinessException;
+use Webman\Exception\BusinessException;
 
 /**
  * HTTP响应异常
@@ -34,15 +34,22 @@ class HttpResponseException extends BusinessException
     /**
      * Undocumented function
      *
-     * @return Response
+     * @return Response|null
      */
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         return $this->response;
     }
 
+     /**
+     * Render an exception into an HTTP response.
+     * @param Request $request
+     * @return Response|null
+     */
     public function render(Request $request): ?Response
     {
-        return $this->response;
+        //返回一个新对象，
+        //避免 App::exceptionResponse() 中 $response->exception($e) 造成循环引用
+        return new Response($this->response->getStatusCode(), $this->response->getHeaders(), $this->response->rawBody());
     }
 }
