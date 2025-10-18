@@ -66,8 +66,6 @@ namespace app\controller;
 
 use support\Request;
 use tpext\builder\common\Builder;
-use think\Controller;
-use plugin\admin\app\model\Admin;
 
 class Index extends Controller
 {
@@ -95,7 +93,11 @@ class Index extends Controller
 
             //更新数据...
 
-            $this->success('成功，数据是:' . json_encode($data));
+            return json([
+                'code' => 0,
+                'msg' => '成功，数据是:' . json_encode($data, JSON_UNESCAPED_UNICODE),
+                'data' => $data,
+            ]);
         }
     }
 }
