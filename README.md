@@ -18,17 +18,21 @@ https://www.workerman.net/doc/webman/install.html
 
 ## 安装本扩展
 
-安装UI builder扩展（二选一）：
+安装UI builder扩展（三选一）：
 
 `composer require ichynul/tpextbuilder:^3.9.1`
 
 或者
 
-`composer require ichynul/tpext-tinyvue:^5.0.1`
+`composer require ichynul/tpext-tinyvue:~5.0`
+
+或者
+
+`composer require ichynul/tpext-vexipui:~5.0`
 
 安装本扩展
 
-`composer require ichynul/builder-man:^2.0.1`
+`composer require ichynul/builder-man:~2.0`
 
 会自动安装相关依赖：`tp-orm`、`tp-cahce`、`tp-template`
 
