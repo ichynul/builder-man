@@ -161,13 +161,13 @@ class ExtLoader
         self::$bindModules = Cache::get('tpext_bind_modules') ?: [];
 
         foreach (self::$modules as $k => $m) {
-            if (!class_exists($k, false)) {
+            if (!class_exists($k)) {
                 unset(self::$modules[$k]);
             }
         }
 
         foreach (self::$resources as $k => $r) {
-            if (!class_exists($k, false)) {
+            if (!class_exists($k)) {
                 unset(self::$resources[$k]);
             }
         }
